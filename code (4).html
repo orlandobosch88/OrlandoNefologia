@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Consultas Médicas de Nefrología - Pago y Consulta</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background: #f0f6fb;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, #0d8ddb 0%, #27a9e1 100%);
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgb(13 141 219 / 0.3);
+  }
+  header h1 {
+    margin: 0 0 0.2rem 0;
+    font-weight: 700;
+    font-size: 2.8rem;
+  }
+  header p {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  main {
+    flex: 1;
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.07);
+    margin-bottom: 2.5rem;
+  }
+  section h2 {
+    color: #065a95;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #27a9e1;
+    display: inline-block;
+  }
+  p, label {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    margin-top: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 2px solid #d1dbe6;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+    min-height: 100px;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus {
+    border-color: #27a9e1;
+    outline: none;
+    box-shadow: 0 0 10px #27a9e19a;
+  }
+  button {
+    margin-top: 2rem;
+    padding: 0.85rem 1.3rem;
+    font-size: 1.1rem;
+    background: #27a9e1;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #0d8ddb;
+  }
+  footer {
+    background: #065a95;
+    color: white;
+    text-align: center;
+    padding: 1rem 0.5rem;
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+  .paypal-button-container {
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    header h1 {
+      font-size: 2rem;
+    }
+    main {
+      padding: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Consultas Médicas de Nefrología</h1>
+  <p>Atención especializada para tu salud renal</p>
+</header>
+<main>
+  <section class="info">
+    <h2>Sobre Nefrología</h2>
+    <p>
+      La Nefrología es la especialidad médica que se encarga del diagnóstico y tratamiento de las enfermedades del riñón y del aparato urinario. Nuestro objetivo es cuidar y preservar tu salud renal con atención personalizada.
+    </p>
+    <p>
+      Si tienes síntomas o dudas relacionadas con problemas renales, no dudes en hacernos tu consulta. Nuestro equipo de especialistas te responderá a la brevedad.
+    </p>
+  </section>
+  <section class="formulario">
+    <h2>Formulario de Consulta</h2>
+    <form id="consultaForm">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" name="correo" placeholder="tu@email.com" required />
+
+      <label for="motivo">Motivo de la consulta</label>
+      <input type="text" id="motivo" name="motivo" placeholder="Ej: Dolor, análisis, dudas" required />
+
+      <label for="mensaje">Mensaje / Descripción</label>
+      <textarea id="mensaje" name="mensaje" placeholder="Describe tu consulta aquí..." required></textarea>
+
+      <button type="submit">Enviar Consulta</button>
+    </form>
+  </section>
+  <section class="pago">
+    <h2>Pago de Cuota Mínima</h2>
+    <p>Para procesar tu consulta, te pedimos abonar una cuota mínima mediante PayPal o tarjeta de crédito/débito.</p>
+    <div id="paypal-button-container" class="paypal-button-container"></div>
+  </section>
+</main>
+<footer>
+  &copy; 2024 Clínica Nefrológica - Todos los derechos reservados
+</footer>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=Ac9I7OwryeIeZxOqkC89bOlnQW4j0h-MFcQlSCZgnUgT6owerTd_nUN7ZeGierwIwmxoH4zg_dYA7GtG&currency=USD&intent=capture&enable-funding=card"></script>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("TU_USER_ID_EMAILJS"); // Reemplaza con tu user ID de EmailJS
+  })();
+</script>
+
+<script>
+  // Función para enviar correo con EmailJS
+  const form = document.getElementById('consultaForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const nombre = form.nombre.value.trim();
+    const correo = form.correo.value.trim();
+    const motivo = form.motivo.value.trim();
+    const mensaje = form.mensaje.value.trim();
+
+    if(nombre && correo && motivo && mensaje) {
+      // Preparar parámetros para EmailJS
+      const templateParams = {
+        from_name: nombre,
+        from_email: correo,
+        motivo_consulta: motivo,
+        mensaje_consulta: mensaje,
+        to_email: 'orlandcule@gmail.com'
+      };
+
+      emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', templateParams)
+        .then(function(response) {
+          alert('Gracias, ' + nombre + '. Tu consulta ha sido enviada correctamente. Pronto te responderemos.');
+          form.reset();
+        }, function(error) {
+          alert('Lo siento, hubo un error al enviar tu consulta. Por favor intenta nuevamente.');
+          console.error('EmailJS Error:', error);
+        });
+    } else {
+      alert('Por favor, completa todos los campos antes de enviar.');
+    }
+  });
+
+  // PayPal Buttons
+  paypal.Buttons({
+    style: {
+      color: 'blue',
+      shape: 'pill',
+      label: 'pay',
+      height: 40
+    },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '5.00'
+          },
+          payee: {
+            email_address: 'orlandcule@gmail.com'
+          },
+          description: "Pago de cuota mínima para consulta de Nefrología"
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert('Gracias, ' + details.payer.name.given_name + '! Tu pago se completó correctamente. Recibirás pronto respuesta a tu consulta.');
+      });
+    },
+    onError: function(err) {
+      alert('Error al procesar el pago. Por favor, intenta nuevamente.');
+      console.error(err);
+    }
+  }).render('#paypal-button-container');
+</script>
+
+<!--
+INSTRUCCIONES PARA CONFIGURAR EMAILJS:
+
+1. Regístrate gratis en https://www.emailjs.com/
+2. Crea un nuevo Service con tu proveedor de correo (p. ej. Gmail).
+3. Crea una plantilla (template) para el email con los valores que usarás:
+   - from_name, from_email, motivo_consulta, mensaje_consulta
+4. Obtén tu User ID (en https://dashboard.emailjs.com/admin/account)
+5. Sustituye las siguientes cadenas en el código arriba:
+   - TU_USER_ID_EMAILJS -> Tu User ID de EmailJS
+   - TU_SERVICE_ID -> El ID de tu servicio en EmailJS
+   - TU_TEMPLATE_ID -> El ID de la plantilla creada
+
+Con esto, cuando alguien envíe el formulario, recibirás el correo con la consulta directamente a 'orlandcule@gmail.com'.
+-->
+
+</body>
+</html>
+
